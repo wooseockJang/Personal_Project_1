@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 자동완성: ctrl + enter -->
+<mapper namespace="com.simplecoding.repositoryexam.mapper.basic.FaqMapper">
+
+	<select id="selectFaqList" parameterType="Criteria" resultType="FaqVO">
+		SELECT * FROM TB_FAQ
+		WHERE TITLE LIKE '%'||#{searchKeyword}||'%'
+		OFFSET #{firstIndex} ROWS
+		FETCH NEXT #{recordCountPerPage} ROWS ONLY
+	</select>
+	
+	<select id="selectFaqListTotCnt" parameterType="Criteria" resultType="int">
+		  SELECT COUNT(*) FROM TB_FAQ
+        	WHERE TITLE LIKE '%' || #{searchKeyword} || '%'
+	</select>
+	
+	<insert id="insert" parameterType="FaqVO">
+		INSERT INTO TB_FAQ(FNO,TITLE,CONTENT,INSERT_TIME)
+		VALUES(SQ_DEPT.NEXTVAL,#{title},#{content},TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'))
+	</insert>
+	
+	<select id="selectFaq" parameterType="int" resultType="FaqVO">
+		SELECT * FROM TB_FAQ WHERE FNO = #{fno}
+	</select>
+	
+	<update id="update" parameterType="FaqVO">
+		UPDATE TB_FAQ SET
+		 TITLE = #{title}, CONTENT = #{content}, UPDATE_TIME = TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') WHERE FNO = #{fno}
+	</update>
+	
+	<!-- 삭제 기능 -->
+	<delete id="delete" parameterType="FaqVO">
+		DELETE TB_FAQ WHERE FNO = #{fno}
+	</delete>
+	
+</mapper>
