@@ -26,7 +26,7 @@ import lombok.ToString;
 @SuppressWarnings("serial")
 public class MemberVO extends Criteria {
 	
-	private String email;	     // 기본키(아이디)
+	private String userId;	     // 기본키(아이디)
 	private String password;     // 비밀번호	
 	private String name;	     // 이름
 	private String birth;	     // 생년월일(8자)	

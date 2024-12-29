@@ -11,4 +11,6 @@ public interface MemberMapper {
 	
 	public void register(MemberVO memberVO); // insert 함수
 	
+	public int countById(String userId); // 아이디 갯수 계산 => 중복확인용
+	
 }

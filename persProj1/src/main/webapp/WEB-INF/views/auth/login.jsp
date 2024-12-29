@@ -28,13 +28,13 @@
                         
                            <div class="form-group">
                               <input type="text" class="form-control form-control-user mb-3"
-                                 placeholder="이메일을 넣기" name="email" id="email"/>
+                                 placeholder="아이디 입력" name="userId" id="userId"/>
                            </div>
                            
                            <div class="form-group">
                               <input type="password"
                                  class="form-control form-control-user mb-3"
-                                 placeholder="패스워드 넣기" name="password" id="password"/>
+                                 placeholder="패스워드 입력" name="password" id="password"/>
                            </div>
 
                            <button class="btn btn-primary btn-user w-100 mb-3">Login</button>

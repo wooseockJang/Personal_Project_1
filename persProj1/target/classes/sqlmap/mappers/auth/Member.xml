@@ -2,17 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 자동완성: ctrl + enter -->
-<mapper namespace="com.simplecoding.repositoryexam.mapper.auth.MemberMapper">
-	
-	<!-- 상세조회 sql : email -->
+<mapper
+	namespace="com.simplecoding.repositoryexam.mapper.auth.MemberMapper">
+
+	<!-- 상세조회 sql : id -->
 	<select id="authenticate" parameterType="MemberVO" resultType="MemberVO">
-		SELECT * FROM TB_MEMBER WHERE EMAIL = #{email}
+		SELECT * FROM TB_MEMBER WHERE USER_ID = #{userId}
 	</select>
-	
+
 	<!-- INSERT -->
 	<insert id="register" parameterType="MemberVO">
-		 INSERT INTO TB_MEMBER(EMAIL, PASSWORD, NAME, BIRTH, PHONENUMBER)
-      	 VALUES (#{email}, #{password}, #{name}, #{birth}, #{phoneNumber})
+		INSERT INTO TB_MEMBER(USER_ID, PASSWORD, NAME, BIRTH, PHONENUMBER)
+		VALUES (#{userId}, #{password}, #{name}, #{birth}, #{phoneNumber})
 	</insert>
-	
+
+	<!-- 아이디 조회 -->
+	<select id="countById" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM TB_MEMBER
+		WHERE USER_ID = #{userId}
+	</select>
+
 </mapper>

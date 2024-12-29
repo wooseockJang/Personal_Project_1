@@ -8,4 +8,6 @@ public interface MemberService {
 	
 	public void registerMember(MemberVO memberVO) throws Exception; // insert 함수
 	
+	public boolean idDuplicate(String userId); // ID 중복확인용
+	
 }

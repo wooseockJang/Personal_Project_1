@@ -21,12 +21,18 @@
 									<h1 class="h4 text-gray-900 mb-4">회원가입</h1>
 								</div>
 								<form class="user" action="/register/addition" method="post">
-									<div class="form-group" style="position: relative;">
+									<div class="form-group"
+										style="display: flex; align-items: stretch; position: relative;">
 										<input type="text" class="form-control form-control-user mb-3"
-											placeholder="이메일 입력" id="email" name="email" maxlength="30" />
+											placeholder="아이디 입력" id="userId" name="userId" maxlength="20"
+											style="flex: 1; height: 38px;" />
 										<div id="error-message"
-											style="display: none; color: red; font-size: 0.7em; position: absolute; top: 50%; right: 10px; transform: translateY(-50%);">
-											유효한 이메일을 입력해 주세요.</div>
+											style="display: none; color: red; font-size: 0.7em; position: absolute; top: 35%; right: 100px; transform: translateY(-50%);">
+											5~20자의 영문 소문자, 숫자를 사용해 주세요.</div>
+										<button type="button" id="check-id-button"
+											class="btn btn-success"
+											style="height: 38px; font-size: 0.8em;"
+											onclick="fn_checkId()" disabled>중복확인</button>
 									</div>
 									<div class="form-group row">
 										<div class="form-group" style="position: relative;">
@@ -85,25 +91,28 @@
 	<jsp:include page="/common/footer.jsp" />
 
 	<script>
-		/* 이메일 입력시 조건 */
-		document
-				.getElementById('email')
-				.addEventListener(
-						'input',
-						function() {
-							const errorMessage = document
-									.getElementById('error-message');
-							const email = this.value;
+		/* 아이디 입력시 조건 */
+		document.getElementById('userId').addEventListener('input', function () {
+		    const errorMessage = document.getElementById('error-message');
+		    const userId = this.value;
+		    const checkIdButton = document.getElementById('check-id-button');
+		
+		    // 아이디 형식 검증: 5~20자, 최소 1개의 소문자와 1개의 숫자 포함
+		    const idPattern = /^(?=[a-z0-9]*[a-z])(?=[a-z0-9]*\d)[a-z0-9]{5,20}$/;
+		
+		    // 아이디가 비어 있거나 패턴에 맞지 않으면 에러 메시지를 표시하고 버튼 비활성화
+		    if (!userId || !idPattern.test(userId)) {
+		        errorMessage.style.display = 'block'; // 에러 메시지 표시
+		        checkIdButton.disabled = true; // 버튼 비활성화
+		    } else {
+		        errorMessage.style.display = 'none'; // 에러 메시지 숨기기
+		        checkIdButton.disabled = false; // 버튼 활성화
+		    }
+		    
+		    // 아이디 값이 변경되면 중복 확인 상태 초기화
+		    isIdChecked = false; // 중복 확인 상태 초기화
+		});
 
-							// 이메일 형식 검증
-							const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-							if (!emailPattern.test(email)) {
-								errorMessage.style.display = 'block'; // 에러 메시지 표시
-							} else {
-								errorMessage.style.display = 'none'; // 에러 메시지 숨기기
-							}
-						});
 
 		/* 비밀번호 입력시 조건 */
 		document
@@ -171,10 +180,7 @@
 		    const currentYear = currentDate.getFullYear(); // 현재 연도
 		    const currentMonth = currentDate.getMonth() + 1; // 현재 월 (0부터 시작하므로 +1)
 		    const currentDay = currentDate.getDate(); // 현재 일
-		
-		    // 생년월일을 입력한 날짜
-		    const birthDate = new Date(year, month - 1, day); // 입력된 생년월일
-		
+	
 		    // 유효성 검사: 8자리 숫자, 올바른 연도, 월, 일 범위 체크, 현재 날짜와 비교
 		    if (
 		        birth.length !== 8 || // 길이 체크
@@ -229,7 +235,7 @@
 				.addEventListener(
 						'submit',
 						function(event) {
-							const email = document.getElementById('email').value;
+							const userId = document.getElementById('userId').value;
 							const password = document
 									.getElementById('password').value;
 							const name = document.getElementById('name').value;
@@ -238,7 +244,7 @@
 									.getElementById('phoneNumber').value;
 
 							// 공백이 있는 입력란을 확인
-							if (!email || !password || !name || !birth
+							if (!userId || !password || !name || !birth
 									|| !phoneNumber) {
 								event.preventDefault(); // 폼 전송을 막음
 								alert('모든 입력란을 입력하세요.');
@@ -246,7 +252,7 @@
 							}
 
 							// 에러 메시지 요소를 가져옵니다
-							const emailError = document
+							const idError = document
 									.getElementById('error-message');
 							const pwError = document
 									.getElementById('pw-error-message');
@@ -260,14 +266,14 @@
 							// 기본적으로 폼 전송을 막습니다.
 							let hasError = false;
 
-							// 이메일 유효성 검사
-							if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-									.test(email)) {
-								emailError.style.display = 'block';
-								hasError = true;
+							// 아이디 유효성 검사
+							if (!/^(?=[a-z0-9]*[a-z])(?=[a-z0-9]*\d)[a-z0-9]{5,20}$/.test(userId)) {
+							    idError.style.display = 'block'; // 에러 메시지 표시
+							    hasError = true; // 에러 상태 설정
 							} else {
-								emailError.style.display = 'none';
+							    idError.style.display = 'none'; // 에러 메시지 숨기기
 							}
+
 
 							// 비밀번호 유효성 검사 (조건: 8~16자, 영문 대소문자, 숫자, 특수문자 포함)
 							if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/
@@ -331,12 +337,53 @@
 								phoneNumError.style.display = 'none';
 							}
 
-							// 에러가 있을 경우 폼 제출을 막고, 알림을 표시합니다.
-							if (hasError) {
-								event.preventDefault();
-								alert('입력된 내용에 오류가 있습니다. 에러 메시지를 확인해주세요.');
-							}
+							// 에러가 있을 경우 폼 제출을 막고 알림을 표시합니다
+							 if (hasError) {
+							        event.preventDefault();
+							        alert('회원 가입이 불가능합니다. 에러 메시지를 확인해주세요.');
+							        return;
+							    }
+
+						    // 아이디 중복 확인 여부 체크
+						    if (!isIdChecked) {
+						        event.preventDefault();
+						        alert('아이디 중복을 확인하세요.');
+						        return;
+						    }
+
+						    // 모든 검사를 통과한 경우 폼 제출
+						    alert('회원 가입이 완료되었습니다!');
 						});
+		
+		// 아이디 중복 체크
+		let isIdChecked = false; // 이메일 중복 확인 상태를 저장
+
+		function fn_checkId() {
+		    const userId = document.getElementById('userId').value;
+		
+		    // 아이디 중복 확인
+		    fetch('/auth/check-userId?userId=' + encodeURIComponent(userId))
+		        .then(response => response.text())
+		        .then(responseText => {
+		            if (responseText === "true") {
+		                alert("이미 존재하는 아이디입니다."); // 중복된 아이디
+		                isIdChecked = false; // 중복 확인 실패
+		            } else if (responseText === "false") {
+		                alert("사용 가능한 아이디입니다."); // 사용 가능한 아이디
+		                isIdChecked = true; // 중복 확인 성공
+		            } else {
+		                alert("예기치 않은 응답: " + responseText);
+		                isIdChecked = false;
+		            }
+		        })
+		        .catch(error => {
+		            alert('아이디 중복 확인에 실패했습니다.');
+		            console.error('중복 확인 오류:', error);
+		            isIdChecked = false;
+		        });
+		
+		    return false;
+		}
 	</script>
 </body>
 </html>
