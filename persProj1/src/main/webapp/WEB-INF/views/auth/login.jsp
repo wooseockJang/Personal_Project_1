@@ -9,19 +9,19 @@
    <jsp:include page="/common/header.jsp" />
    
    <div class="row justify-content-center">
-      <div class="col-xl-10 col-lg-12 col-md-9">
+      <div class="col-xl-4 col-lg-4 col-md-9">
          <div class="card mt-5">
             <div class="card-body p-0">
                <!-- {/* Nested Row within Card Body */} -->
                <div class="row">
-                  <div class="col-lg-6">
+                 <%--  <div class="col-lg-6">
                   	 <!-- 기본주소(localhost:8000)가 변경돼도 찾아주는 코드 -->
                      <img src="${pageContext.request.contextPath}/resources/images/puppy-1920_1280_2.jpg" class="img-fluid">
-                  </div>
-                  <div class="col-lg-6">
+                  </div> --%>
+                  <div class="col-lg-12">
                      <div class="p-5">
                         <div class="text-center">
-                           <h1 class="h4 mb-4">Welcome Back!</h1>
+                           <h1 class="h4 mb-4">로그인</h1>
                         </div>
                         
                         <form class="user" action="/loginProcess" method="post">
@@ -42,9 +42,9 @@
                         </form>
                         
                         <hr />
-                        <div class="text-center">
-                           <a class="small" href="/register"> Create an Account! </a>
-                        </div>
+                        <!-- <div class="text-center">
+                           <a class="small" href="/register"> 계정을 만들어보세요! </a>
+                        </div> -->
                      </div>
                   </div>
                </div>

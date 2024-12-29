@@ -11,8 +11,8 @@
 	
 	<!-- INSERT -->
 	<insert id="register" parameterType="MemberVO">
-		 INSERT INTO TB_MEMBER(EMAIL, PASSWORD, NAME)
-      	 VALUES (#{email},#{password},#{name})
+		 INSERT INTO TB_MEMBER(EMAIL, PASSWORD, NAME, BIRTH, PHONENUMBER)
+      	 VALUES (#{email}, #{password}, #{name}, #{birth}, #{phoneNumber})
 	</insert>
 	
 </mapper>

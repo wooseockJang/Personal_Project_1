@@ -28,7 +28,7 @@ public class MemberController {
    
 	@Autowired
 	MemberService memberService;
-	// 안녕하시오?
+
    // 로그인 화면
    @GetMapping("/login")
    public String loginView() {
