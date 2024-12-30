@@ -26,24 +26,17 @@ public class MemberServiceImpl implements MemberService {
 
 	// 인증 : 상세조회
 	@Override
-	public MemberVO authenticate(MemberVO loginVO) throws Exception {
-		// TODO memberMapper 의 상세조회(인증) 실행, 업무로직 추가
-		// 1) memberMapper 의 상세조회(인증) 실행
+	public MemberVO authenticate(MemberVO loginVO) {
 		MemberVO memberVO = memberMapper.authenticate(loginVO);
-		// 2) memberVO 있으면 => 암호 체크 : jsp 전송한 암호를 암호화해서 DB와 비교(OK)
-		if (memberVO != null) {
-			// TODO : 암호화 Bcryt , DB 암호와 입력암호가 같은지 비교
-			// 사용법 : BCrypt.checkpw(jsp전송암호, DB암호) 맞으면 true, 틀리면 false
-			boolean isMatchedPassword = BCrypt.checkpw(loginVO.getPassword(), memberVO.getPassword());
 
-			// 예외처리 : false 경우 : 암호가 틀립니다.
-			if (isMatchedPassword == false) {
-				throw new Exception("암호가 틀립니다.");
-			}
+		if (memberVO == null || !BCrypt.checkpw(loginVO.getPassword(), memberVO.getPassword())) {
+			// !BCrypt.checkpw(loginVO.getPassword(), membersVO.getPassword()) => 입력된 비밀번호가 DB의 암호화된 비밀번호와 일치하지 않을 경우에 실행
+			//	암호화된 비밀번호는 복호화할 수 없지만, BCrypt는 내부적으로 동일한 해시 알고리즘을 사용하여 평문 비밀번호를 비교합니다.
+			
+			return null; // 회원이 없거나 비밀번호가 틀릴 경우 null 반환
 		}
 
-		return memberVO;
-
+		return memberVO; // 인증 성공 시 회원 정보 반환
 	}
 
 	// insert 함수
@@ -60,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
 
 	}
 
-	// email 중복확인
+	// id 중복확인
 	@Override
 	public boolean idDuplicate(String userId) {
 

@@ -51,14 +51,14 @@ public class MemberController {
 
 	// 로그인 진행 : 로그인 버튼 클릭시 실행 : post방식 : 보안 , get방식 : id/password 노출
 	@PostMapping("/loginProcess")
-	public String login(@ModelAttribute MemberVO loginVO, HttpServletRequest request) throws Exception {
+	public String login(@ModelAttribute MemberVO loginVO, HttpServletRequest request, Model model) throws Exception {
 
 		// 1) id/password 가지고 DB 에 정보가 있는지 확인 : 인증(SELECT SQL)
 		MemberVO memberVO = memberService.authenticate(loginVO);
 
-		// 선택) 예외처리 : 회원이 없으면 없습니다.
 		if (memberVO == null) {
-			throw new Exception("회원이 없습니다");
+			model.addAttribute("errorMessage", "ID가 존재하지 않거나 비밀번호가 틀립니다.");
+			return "auth/login"; // 로그인 페이지로 포워딩
 		}
 
 		// 2) 인증 OK(DB 에 유저가 있으면) : 세션에 email/password 넣기

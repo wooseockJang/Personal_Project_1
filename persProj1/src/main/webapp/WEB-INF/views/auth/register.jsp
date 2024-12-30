@@ -356,7 +356,7 @@
 						});
 		
 		// 아이디 중복 체크
-		let isIdChecked = false; // 이메일 중복 확인 상태를 저장
+		let isIdChecked = false; // 아이디 중복 확인 상태를 저장
 
 		function fn_checkId() {
 		    const userId = document.getElementById('userId').value;
